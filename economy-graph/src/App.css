@@ -1,0 +1,10 @@
+.App {
+  text-align: center;
+  margin-top: 200px;
+  margin-left: 200px;
+}
+.recharts-cartesian-axis-tick-value{
+font-size: 14px;
+font-weight: bold;
+overflow: hidden;
+}
