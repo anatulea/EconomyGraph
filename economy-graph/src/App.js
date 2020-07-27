@@ -1,23 +1,7 @@
-// import React from 'react';
-// import './App.css';
-
-// function App() {
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//        Hello people
-//       </header>
-//     </div>
-//   );
-// }
-
-// export default App;
-
 import React, { PureComponent } from "react";
 import {
   BarChart,
   Bar,
-  Cell,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -26,45 +10,28 @@ import {
 } from "recharts";
 import "./App.css";
 
-const data = [
-  {
-    name: "Health carehgjghjghfjgfhfgj ",
-    score: 13.7,
-  },
-  {
-    name: "Health caresdhfdfjfg",
-    score: 15.7,
-  },
-  {
-    name: "Healthcvgdf care ",
-    score: 1.7,
-  },
-];
+const economyDataString =
+  "['Professional, scientific, technical services (11.0%)', 'Educational services (9.6%)', 'Public administration (9.6%)', 'Construction (7.1%)', 'Health care (6.6%)', 'Data processing, libraries, other information services (3.7%)', 'Broadcasting & telecommunications (3.6%)']";
+// "['Health care (13.7%)', 'Professional, scientific, technical services (9.6%)', 'Educational services (9.0%)', 'Accommodation & food services (7.7%)', 'Finance & insurance (6.1%)', 'Construction (5.2%)', 'Other transportation, support activities, couriers (4.5%)']";
 
-const economdata ="['Professional, scientific, technical services (11.0%)', 'Educational services (9.6%)', 'Public administration (9.6%)', 'Construction (7.1%)', 'Health care (6.6%)', 'Data processing, libraries, other information services (3.7%)', 'Broadcasting & telecommunications (3.6%)']"
-  // "['Health care (13.7%)', 'Professional, scientific, technical services (9.6%)', 'Educational services (9.0%)', 'Accommodation & food services (7.7%)', 'Finance & insurance (6.1%)', 'Construction (5.2%)', 'Other transportation, support activities, couriers (4.5%)']";
-console.log("economdata", economdata);
-
-const funeconom = (arr) => {
-  let newArray = [];
-  let objarr = [];
+const convertStringToObject = (arr) => {
+  let keyValueArray = [];
+  let arrOfKeyValueArrays = [];
   let arrParsed = arr.split(" ' ");
 
   arrParsed.map((element) => {
     element.split("'").map((item) => {
       if (item.length > 3) {
-        newArray.push(item);
+        keyValueArray.push(item);
       }
     });
   });
-  newArray.forEach((item) => {
-    let newitem = item.split(/[()]/);
-    // console.log(newitem, "new");
-    newitem.pop();
-    objarr.push(newitem);
-  });
 
-  //console.log(objarr, "new objarr");
+  keyValueArray.forEach((item) => {
+    let newitem = item.split(/[()]/);
+    newitem.pop();
+    arrOfKeyValueArrays.push(newitem);
+  });
 
   function toObject(pairs) {
     return Array.from(pairs).reduce(
@@ -72,42 +39,33 @@ const funeconom = (arr) => {
       {}
     );
   }
-  let ObjectFromArray = toObject(objarr);
-  //console.log(toObject(objarr), "it works");
+
+  let ObjectFromArray = toObject(arrOfKeyValueArrays);
 
   return ObjectFromArray;
 };
 
-const HELLOoBJECT = funeconom(economdata);
+const economyObject = convertStringToObject(economyDataString);
+let arrOfIndustries = [];
 
-console.log(HELLOoBJECT, "HELLOoBJECT");
-
-// let KeyArray = Object.keys(HELLOoBJECT);
-// let valuesArray = Object.values(HELLOoBJECT);
-
-// const newvaluearr = [];
-// valuesArray.forEach((value) => {
-//   return newvaluearr.push(parseFloat(value));
-// });
-
-let bigARRAY = [];
-
-const makeitWork = () => {
-  for (let k in HELLOoBJECT) {
+const changeKeyNames = () => {
+  for (let keyName in economyObject) {
     let xlabel;
-    function getxaxis(k) {
-
+    function shortenIndustryName(keyName) {
       let translation = [];
+
       translation["Health care "] = "Health";
       translation["Professional, scientific, technical services "] = "Tech";
       translation["Educational services "] = "Education";
       translation["Accommodation & food services "] = "Food";
       translation["Construction "] = "Construction";
       translation["Chemicals "] = "Chemicals";
-      translation["Administrative & support & waste management services "] = "Maintenance";
+      translation["Administrative & support & waste management services "] =
+        "Maintenance";
       translation["Public administration "] = "Public admin";
       translation["Transportation equipment "] = "Transportation";
-      translation["Publishing, motion picture & sound recording industries "] = "Publishing";
+      translation["Publishing, motion picture & sound recording industries "] =
+        "Publishing";
       translation["Food & beverage stores "] = "Stores";
       translation["Social assistance "] = "Assistance";
       translation["Finance & insurance "] = "Finance";
@@ -116,7 +74,8 @@ const makeitWork = () => {
       translation["Computer & electronic products "] = "Electronics";
       translation["Truck transportation "] = "Transportation";
       translation["Mining, quarrying, oil & gas extraction "] = "Extraction";
-      translation["Department & other general merchandise stores "] = "Merchandise";
+      translation["Department & other general merchandise stores "] =
+        "Merchandise";
       translation["Air transportation "] = "Transportation";
       translation["Textile mills & textile products "] = "Textile";
       translation["Agriculture, forestry, fishing & hunting "] = "Agriculture";
@@ -125,42 +84,43 @@ const makeitWork = () => {
       translation["Food "] = "Food";
       translation["Paper "] = "Paper";
       translation["Broadcasting & telecommunications "] = "Broadcasting";
-      translation["Used merchandise, gift, novelty, souvenir, other miscellaneous stores "] = "Miscellaneous";
-      translation["Data processing, libraries, other information services "] = "Information";
+      translation[
+        "Used merchandise, gift, novelty, souvenir, other miscellaneous stores "
+      ] = "Miscellaneous";
+      translation["Data processing, libraries, other information services "] =
+        "Information";
 
-      console.log(translation);
-      xlabel = translation[k];
+      xlabel = translation[keyName];
     }
-   
-    getxaxis(k);
 
-    bigARRAY.push({
-      name: k,
-      score: parseFloat(HELLOoBJECT[k]),
+    shortenIndustryName(keyName);
+
+    arrOfIndustries.push({
+      name: keyName,
+      Industry: parseFloat(economyObject[keyName]),
       xlabel: xlabel,
     });
   }
 };
-makeitWork();
 
-console.log(bigARRAY, "here");
+changeKeyNames();
 
 function CustomTooltip({ payload, label, active }) {
-  
   if (active) {
-    console.log(payload[0].payload.name,"payload")
     return (
       <div className="custom-tooltip">
         <h3 className="label">{`${payload[0].value}%`}</h3>
-        <p className="desc" style={{ textalign: "center" }}>{`${payload[0].payload.name}`}</p>
+        <p
+          className="desc"
+          style={{ textalign: "center" }}
+        >{`${payload[0].payload.name}`}</p>
       </div>
     );
   }
-
   return null;
 }
 
-const renderCustomBarLabel = ({ payload, x, y, width, height, value }) => {
+const renderCustomBarLabel = ({ x, y, width, value }) => {
   return (
     <text
       x={x + width / 2}
@@ -179,7 +139,7 @@ export default class App extends PureComponent {
         <BarChart
           width={800}
           height={300}
-          data={bigARRAY}
+          data={arrOfIndustries}
           margin={{
             top: 5,
             right: 30,
@@ -188,26 +148,23 @@ export default class App extends PureComponent {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis
-           dataKey="xlabel" 
-           />
+          <XAxis dataKey="xlabel" />
           <YAxis />
           <Tooltip
             wrapperStyle={{
               width: 120,
-              backgroundColor: "rgb(245,245,245 ",
-              border: "1px solid #d5d5d5",
+              backgroundColor: "rgb(248,255,255,0.9)",
+              border: "1px solid #00CED1",
               borderRadius: 3,
-              lineHeight: "40px",
+              fontSize: "15px",
+              fontWeight: "bold",
+              overflow: "hidden",
+              lineHeight: "15px",
             }}
             content={<CustomTooltip />}
           />
           <Legend />
-          <Bar 
-          dataKey="score" 
-          fill="#82ca9d"
-           label={renderCustomBarLabel}
-            />
+          <Bar dataKey="Industry" fill="#00CED1" label={renderCustomBarLabel} />
         </BarChart>
       </div>
     );

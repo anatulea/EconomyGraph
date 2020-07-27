@@ -3,10 +3,8 @@
   margin-top: 200px;
   margin-left: 200px;
 }
-/* .custom-tooltip{
-  background-color:rgb(245,245,245 0.9);
-} */
 .recharts-cartesian-axis-tick-value{
-font-size: 10px;
+font-size: 14px;
+font-weight: bold;
 overflow: hidden;
 }
