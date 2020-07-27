@@ -1,0 +1,20 @@
+{
+  "name": "economygraph",
+  "version": "1.0.0",
+  "description": "economy graph ",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anatulea/EconomyGraph.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/anatulea/EconomyGraph/issues"
+  },
+  "homepage": "https://github.com/anatulea/EconomyGraph#readme",
+  "dependencies": {}
+}
